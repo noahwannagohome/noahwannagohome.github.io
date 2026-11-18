@@ -2,15 +2,17 @@
 <title id="title">DP 엔진 배정과 prefix 캐시 재사용</title>
 <desc id="desc">같은 prefix를 가진 후속 요청이 엔진 A로 가면 남아 있는 캐시를 재사용한다. 엔진 B에 해당 prefix가 없으면 다시 계산한다.</desc>
 <rect width="760" height="510" rx="16" fill="#151e29"/>
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#496573"/></marker></defs>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#496573"/></marker></defs>
 <g font-family="sans-serif" text-anchor="middle" fill="#e1eaf2">
 <text x="380" y="41" font-size="21" font-weight="700">같은 입력도 어느 엔진으로 가느냐에 따라</text>
 <rect x="185" y="66" width="390" height="61" rx="8" fill="#1c2835" stroke="#496573"/>
 <text x="380" y="103" font-size="18">앞부분이 같은 후속 요청</text>
-<path d="M380 127V156" stroke="#496573" fill="none" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M380 127V164" stroke="#496573" fill="none" stroke-width="2" marker-end="url(#arrow)"/>
 <rect x="275" y="165" width="210" height="54" rx="8" fill="#1c2835" stroke="#496573"/>
 <text x="380" y="198" font-size="18">요청 배정</text>
-<path d="M380 219V243H195V268M380 243H565V268" stroke="#496573" fill="none" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M380 219V243" stroke="#496573" fill="none" stroke-width="2"/>
+<path d="M380 243H195V279" stroke="#496573" fill="none" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M380 243H565V279" stroke="#496573" fill="none" stroke-width="2" marker-end="url(#arrow)"/>
 <rect x="40" y="280" width="310" height="155" rx="10" fill="#1c2835" stroke="#7ad5bd" stroke-width="2"/>
 <rect x="410" y="280" width="310" height="155" rx="10" fill="#1c2835" stroke="#edc48d" stroke-width="2"/>
 <text x="195" y="315" font-size="20" font-weight="700">엔진 A</text>

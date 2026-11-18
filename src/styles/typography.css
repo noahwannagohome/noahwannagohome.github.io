@@ -62,11 +62,17 @@
     table {
       th,
       td {
-        @apply border-border border p-2;
+        @apply border-border border p-2 align-top;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
       }
 
       th {
         @apply py-1.5;
+      }
+
+      :is(th, td):first-child {
+        min-width: 5em;
       }
 
       th[align="center"],
@@ -77,6 +83,7 @@
       th[align="right"],
       td[align="right"] {
         text-align: right;
+        font-variant-numeric: tabular-nums;
       }
 
       th[align="left"],

@@ -170,5 +170,5 @@ KV 캐시 dtype으로는 현재 운영 명령에 `fp8_ds_mla`가 들어 있다. 
 - [vLLM Expert Parallel Deployment와 EPLB](https://docs.vllm.ai/en/stable/serving/expert_parallel_deployment/)
 - [vLLM Optimization and Tuning](https://docs.vllm.ai/en/stable/configuration/optimization/)
 
-*초기 실행 옵션과 환경 변경은 ONE Router의 서빙 테스트 로그·변경 이력, 현재 설정은 README, TP·DP 비교 판단은 실제 운영 경험을 기준으로 정리했다. 각 옵션의 독립적인 개선율을 측정한 벤치마크는 아니므로 설정 변경을 하나의 성능 향상 수치로 환산하지 않았다.*
+*초기 실행 옵션과 환경 변경은 Router 프로젝트의 서빙 테스트 로그·변경 이력, 현재 설정은 README, TP·DP 비교 판단은 실제 운영 경험을 기준으로 정리했다. 각 옵션의 독립적인 개선율을 측정한 벤치마크는 아니므로 설정 변경을 하나의 성능 향상 수치로 환산하지 않았다.*
 

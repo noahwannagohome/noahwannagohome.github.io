@@ -8,7 +8,7 @@
 
 ## 관련 글
 
-- [사내망 코딩 에이전트용 LLM 서비스 구축·운영](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/): 게이트웨이와 운영 포털을 만든 배경, API 호환 처리와 스트리밍 문제를 다듬은 기록.
+- [모델만 띄우면 끝일까? 사내망 온프레미스 LLM 인프라 구축과 게이트웨이 개발기](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/): H200 8장 인프라 구성, 게이트웨이와 운영 포털을 만든 배경, API 호환 처리와 스트리밍 문제를 다듬은 기록.
 - [NVIDIA H200 기반 vLLM 모델 서빙 최적화: 장문 컨텍스트와 KV 캐시·병렬화 튜닝](https://noahwannagohome.github.io/tech-b-log/posts/model-serving-tuning/): 게이트웨이 뒤에서 동작하는 모델 서버의 병렬화와 프리픽스 캐시를 조정한 기록.
 
 ## 로컬 실행

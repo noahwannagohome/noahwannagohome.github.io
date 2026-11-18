@@ -1,5 +1,5 @@
 ---
-title: "온프레미스 AX, 무엇부터 시작할까? 사내 모델을 직원 PC에 연결해 보며"
+title: "온프레미스 AX, 무엇부터 시작할까? Environment over Apps"
 author: "noah"
 pubDatetime: 2026-11-18T22:00:00+09:00
 featured: false

@@ -1,5 +1,5 @@
 ---
-title: "H200 8장에서 코딩 에이전트용 모델을 서빙하며 바꿔 온 것들"
+title: "NVIDIA H200 기반 vLLM 모델 서빙 최적화: 장문 컨텍스트와 KV 캐시·병렬화 튜닝"
 author: "noah"
 pubDatetime: 2026-11-18T10:30:55+09:00
 featured: false

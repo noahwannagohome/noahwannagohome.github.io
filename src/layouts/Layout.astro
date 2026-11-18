@@ -10,6 +10,7 @@ type Props = {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  ogType?: "website" | "article";
 };
 
 const { site } = config;
@@ -19,6 +20,7 @@ const {
   description = site.description,
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  ogType = "website",
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
@@ -46,7 +48,7 @@ const rssHref = getAssetPath("rss.xml");
     <link rel="sitemap" href={getAssetPath("sitemap-index.xml")} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.title} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

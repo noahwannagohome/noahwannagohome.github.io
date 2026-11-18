@@ -9,7 +9,7 @@ Sitemap: ${sitemapURL.href}
 `;
 
 export const GET: APIRoute = ({ site }) => {
-  const sitemapURL = new URL(getAssetPath("sitemap-index.xml"), site);
+  const sitemapURL = new URL(getAssetPath("sitemap.xml"), site);
   return new Response(getRobotsTxt(sitemapURL), {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
   });

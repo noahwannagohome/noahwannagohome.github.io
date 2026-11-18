@@ -6,6 +6,7 @@ import {
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import { readdir, rename, rm } from "node:fs/promises";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import rehypeCallouts from "rehype-callouts";
 import {
@@ -31,6 +32,27 @@ export default defineConfig({
       filter: page =>
         config.features?.showArchives !== false || !/\/archives\/?$/.test(page),
     }),
+    {
+      name: "single-sitemap",
+      hooks: {
+        "astro:build:done": async ({ dir, logger }) => {
+          const files = (await readdir(dir)).filter(file =>
+            /^sitemap.*\.xml$/.test(file)
+          );
+          // Fail rather than silently discard URLs if the sitemap ever splits.
+          if (
+            files.length !== 2 ||
+            !files.includes("sitemap-0.xml") ||
+            !files.includes("sitemap-index.xml")
+          ) {
+            throw new Error("Expected one generated sitemap and its index.");
+          }
+          await rename(new URL("sitemap-0.xml", dir), new URL("sitemap.xml", dir));
+          await rm(new URL("sitemap-index.xml", dir));
+          logger.info("Created sitemap.xml");
+        },
+      },
+    },
     inlineTocDeprecation(),
   ],
   i18n: {

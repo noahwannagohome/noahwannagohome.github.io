@@ -25,6 +25,7 @@ function persist(): void {
 const themeIllustrations = new Set([
   "llm-agent-cycle", "llm-service-architecture", "llm-tool-bridge",
   "llm-stream-benchmark", "llm-operating-metrics", "llm-service-flow",
+  "llm-dp-cache-routing",
 ]);
 
 function reflectIllustrations(): void {

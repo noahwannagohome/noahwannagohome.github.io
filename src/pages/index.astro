@@ -12,6 +12,7 @@ import LinkButton from "@/components/LinkButton.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
+import { graph, personSchema, websiteSchema } from "@/utils/structuredData";
 
 const { socials, posts: postsConfig } = config;
 
@@ -25,7 +26,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const homePath = getRelativeLocaleUrl(locale, "");
 ---
 
-<Layout>
+<Layout
+  title={`${config.site.title} | ${config.site.tagline ?? config.site.description}`}
+  structuredData={graph(websiteSchema(), personSchema())}
+>
   <Header />
   <main
     id="main-content"

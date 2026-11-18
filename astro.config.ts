@@ -1,12 +1,8 @@
-import {
-  defineConfig,
-  envField,
-  svgoOptimizer,
-} from "astro/config";
+import { defineConfig, envField, svgoOptimizer } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import { readdir, rename, rm } from "node:fs/promises";
+import { readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import rehypeCallouts from "rehype-callouts";
 import {
@@ -20,17 +16,34 @@ import {
   inlineTocDeprecation,
   rehypeInlineToc,
 } from "./src/utils/rehypeInlineToc";
-import config from "./astro-paper.config";
+
+const base = "/tech-b-log";
+
+async function replaceAsync(
+  text: string,
+  pattern: RegExp,
+  replacer: (match: string, ...groups: string[]) => Promise<string>
+) {
+  const replacements = await Promise.all(
+    [...text.matchAll(pattern)].map(([match, ...groups]) =>
+      replacer(match, ...groups)
+    )
+  );
+  let i = 0;
+  return text.replace(pattern, () => replacements[i++]);
+}
 
 export default defineConfig({
   site: "https://noahwannagohome.github.io",
-  base: "/tech-b-log",
+  base,
   trailingSlash: "always",
   integrations: [
     mdx(),
     sitemap({
+      // Pages marked noindex (search, archives, tag lists) stay out of the
+      // sitemap so crawlers spend their budget on posts.
       filter: page =>
-        config.features?.showArchives !== false || !/\/archives\/?$/.test(page),
+        !/\/(search|archives|tags)(\/|$)/.test(new URL(page).pathname),
     }),
     {
       name: "single-sitemap",
@@ -47,7 +60,30 @@ export default defineConfig({
           ) {
             throw new Error("Expected one generated sitemap and its index.");
           }
-          await rename(new URL("sitemap-0.xml", dir), new URL("sitemap.xml", dir));
+          // Add <lastmod> to post URLs from the article dates in their HTML.
+          const xml = await readFile(new URL("sitemap-0.xml", dir), "utf8");
+          const withLastmod = await replaceAsync(
+            xml,
+            /<loc>([^<]+)<\/loc>/g,
+            async (match, loc) => {
+              const path = new URL(loc).pathname.slice(`${base}/`.length);
+              if (!path.startsWith("posts/") || path === "posts/") return match;
+              const html = await readFile(
+                new URL(`${path}index.html`, dir),
+                "utf8"
+              ).catch(() => "");
+              const date =
+                html.match(
+                  /property="article:modified_time" content="([^"]+)"/
+                )?.[1] ??
+                html.match(
+                  /property="article:published_time" content="([^"]+)"/
+                )?.[1];
+              return date ? `${match}<lastmod>${date}</lastmod>` : match;
+            }
+          );
+          await writeFile(new URL("sitemap.xml", dir), withLastmod);
+          await rm(new URL("sitemap-0.xml", dir));
           await rm(new URL("sitemap-index.xml", dir));
           logger.info("Created sitemap.xml");
         },

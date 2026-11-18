@@ -1,6 +1,16 @@
 ---
 import Layout from "./Layout.astro";
 import config from "@/config";
+import { useTranslations } from "@/i18n";
+import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
+import {
+  breadcrumbSchema,
+  graph,
+  personRef,
+  personSchema,
+  siteRootUrl,
+  websiteRef,
+} from "@/utils/structuredData";
 
 type Props = {
   title?: string;
@@ -10,43 +20,66 @@ type Props = {
   canonicalURL?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
+  tags?: string[];
+  wordCount?: number;
 };
 
 const { site } = config;
+const t = useTranslations(Astro.currentLocale ?? site.lang);
 
-const { title, articleTitle, description, ogImage, canonicalURL, pubDatetime, modDatetime } =
-  Astro.props;
+const {
+  title,
+  articleTitle,
+  description,
+  ogImage,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  tags = [],
+  wordCount,
+} = Astro.props;
 
 const articleURL = canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
+const headline = articleTitle ?? title ?? site.title;
+// Google requires an image for article rich results; fall back to the site card.
+const imageURL =
+  ogImage ?? new URL(resolveDefaultOgImagePath(config), Astro.site).href;
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: articleTitle ?? title ?? site.title,
-  description,
-  url: articleURL,
-  mainEntityOfPage: { "@type": "WebPage", "@id": articleURL },
-  image: ogImage,
-  ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: site.author,
-      ...(site.profile && { url: site.profile }),
-    },
-  ],
-};
-
-// JSON.stringify leaves `<` alone, so a title containing `</script>` would
-// end the ld+json block early. `\u003c` reads back as `<` for JSON parsers.
-const structuredDataJson = JSON.stringify(structuredData).replace(
-  /</g,
-  "\\u003c"
+const structuredData = graph(
+  {
+    "@type": "BlogPosting",
+    "@id": `${articleURL}#article`,
+    headline,
+    description,
+    url: articleURL,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleURL },
+    image: [imageURL],
+    inLanguage: site.lang,
+    ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
+    dateModified: (modDatetime ?? pubDatetime)?.toISOString(),
+    author: personRef,
+    publisher: personRef,
+    isPartOf: websiteRef,
+    ...(tags.length > 0 && { keywords: tags.join(", ") }),
+    ...(wordCount && { wordCount }),
+  },
+  personSchema(),
+  breadcrumbSchema([
+    [site.title, siteRootUrl],
+    [t.nav.posts, new URL("posts/", siteRootUrl).href],
+    [headline, articleURL],
+  ])
 );
 ---
 
-<Layout {title} {description} {ogImage} canonicalURL={articleURL} ogType="article">
+<Layout
+  {title}
+  {description}
+  {ogImage}
+  canonicalURL={articleURL}
+  ogType="article"
+  {structuredData}
+>
   <Fragment slot="head">
     {
       pubDatetime && (
@@ -64,12 +97,8 @@ const structuredDataJson = JSON.stringify(structuredData).replace(
         />
       )
     }
-
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={structuredDataJson}
-    />
+    <meta property="article:author" content={site.author} />
+    {tags.map(tag => <meta property="article:tag" content={tag} />)}
   </Fragment>
 
   <slot />

@@ -76,6 +76,7 @@ const {
 } = post.data;
 
 const { Content, headings } = await render(post);
+const wordCount = post.body?.split(/\s+/).filter(Boolean).length;
 const tocHeadings = config.features.toc && !hideToc ? headings : [];
 
 let ogImageUrl: string | undefined;
@@ -107,6 +108,8 @@ const ogImage = ogImageUrl
   canonicalURL={canonicalURL}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
+  tags={tags}
+  wordCount={wordCount}
 >
   <Header />
 

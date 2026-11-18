@@ -11,6 +11,10 @@ type Props = {
   ogImage?: string;
   canonicalURL?: string;
   ogType?: "website" | "article";
+  /** Keep the page out of search results while still letting crawlers follow its links. */
+  noindex?: boolean;
+  /** schema.org objects rendered as one JSON-LD block. */
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 };
 
 const { site } = config;
@@ -21,9 +25,19 @@ const {
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
   ogType = "website",
+  noindex = false,
+  structuredData,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
+const isDefaultOgImage = ogImage === resolveDefaultOgImagePath(config);
+const ogLocale = site.lang === "ko" ? "ko_KR" : site.lang.replace("-", "_");
+
+// JSON.stringify leaves `<` alone, so a value containing `</script>` would end
+// the ld+json block early. `\u003c` reads back as `<` for JSON parsers.
+const structuredDataJson =
+  structuredData &&
+  JSON.stringify(structuredData).replace(/</g, "\\u003c");
 const rssHref = getAssetPath("rss.xml");
 ---
 
@@ -45,22 +59,38 @@ const rssHref = getAssetPath("rss.xml");
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={site.author} />
+    <meta
+      name="robots"
+      content={noindex
+        ? "noindex, follow"
+        : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+    />
     <link rel="sitemap" href={getAssetPath("sitemap.xml")} />
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:site_name" content={site.title} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:alt" content={title} />
+    {
+      isDefaultOgImage && (
+        <>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+        </>
+      )
+    }
 
-    <!-- Twitter / X -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageURL} />
+    <!-- Twitter / X (these use `name`, not `property`) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <meta name="twitter:image:alt" content={title} />
 
     <!-- RSS autodiscovery -->
     <link
@@ -77,11 +107,34 @@ const rssHref = getAssetPath("rss.xml");
     <slot name="head" />
 
     {
+      structuredDataJson && (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={structuredDataJson}
+        />
+      )
+    }
+
+    {
       site.googleVerification && (
         <meta
           name="google-site-verification"
           content={site.googleVerification}
         />
+      )
+    }
+    {
+      site.naverVerification && (
+        <meta
+          name="naver-site-verification"
+          content={site.naverVerification}
+        />
+      )
+    }
+    {
+      site.bingVerification && (
+        <meta name="msvalidate.01" content={site.bingVerification} />
       )
     }
 

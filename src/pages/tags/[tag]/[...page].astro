@@ -37,7 +37,11 @@ const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
 ---
 
-<Layout title={`${t.pages.tagTitle}: ${tagName} | ${config.site.title}`}>
+<Layout
+  title={`${t.pages.tagTitle}: ${tagName} | ${config.site.title}`}
+  description={`${tagName} 태그가 붙은 ${config.site.title} 글 모음.`}
+  noindex
+>
   <Header />
 
   <Breadcrumb />

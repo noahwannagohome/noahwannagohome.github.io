@@ -45,3 +45,30 @@ jobs:
       - name: Publish to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  # Tell Bing, Naver and other IndexNow engines that the site changed.
+  # Google does not use IndexNow; it reads sitemap.xml (submitted in Search Console).
+  indexnow:
+    if: github.event_name != 'pull_request'
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      SITE: https://noahwannagohome.github.io/tech-b-log/
+      INDEXNOW_KEY: 6a6b17851e8993236d080c6941af8ed8
+    steps:
+      - name: Submit sitemap URLs to IndexNow
+        run: |
+          # Pages can take a moment to go live after deploy-pages finishes.
+          for i in 1 2 3 4 5 6; do
+            curl -fsS "${SITE}${INDEXNOW_KEY}.txt" | grep -qx "$INDEXNOW_KEY" && break
+            sleep 10
+          done
+          urls=$(curl -fsS "${SITE}sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed 's/<[^>]*>//g' | jq -R . | jq -s .)
+          jq -n --arg key "$INDEXNOW_KEY" --arg site "$SITE" --argjson urls "$urls" \
+            '{host: "noahwannagohome.github.io", key: $key, keyLocation: ($site + $key + ".txt"), urlList: $urls}' \
+            > payload.json
+          cat payload.json
+          curl -sS -o /dev/null -w "IndexNow HTTP %{http_code}\n" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data @payload.json https://api.indexnow.org/indexnow

@@ -5,6 +5,8 @@ interface SiteConfig {
   title: string;
   /** Short description used in SEO meta and RSS feed */
   description: string;
+  /** Short keyword phrase appended to the home page <title>, e.g. "Backend & Infra Dev Blog" */
+  tagline?: string;
   /** Default post author name */
   author: string;
   /** Author profile URL (used in structured data) */
@@ -19,6 +21,12 @@ interface SiteConfig {
   dir?: "ltr" | "rtl" | "auto";
   /** Google Search Console verification meta tag value */
   googleVerification?: string;
+  /** Naver Search Advisor verification meta tag value */
+  naverVerification?: string;
+  /** Bing Webmaster Tools verification meta tag value (msvalidate.01) */
+  bingVerification?: string;
+  /** Extra profile URLs of the author, e.g. LinkedIn (used as schema.org sameAs) */
+  sameAs?: string[];
 }
 
 interface PostsConfig {
@@ -122,7 +130,15 @@ type ResolvedSiteConfig = Required<
     | "ogImage"
   >
 > &
-  Pick<SiteConfig, "profile" | "googleVerification">;
+  Pick<
+    SiteConfig,
+    | "profile"
+    | "tagline"
+    | "googleVerification"
+    | "naverVerification"
+    | "bingVerification"
+    | "sameAs"
+  >;
 
 export interface ResolvedAstroPaperConfig {
   site: ResolvedSiteConfig;

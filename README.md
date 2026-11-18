@@ -6,6 +6,11 @@
 
 [AstroPaper](https://github.com/satnaing/astro-paper) 7.1.0과 Astro 7을 기반으로 합니다. 테마 원본: `6f61e2dc0e45bbcefc05f4055f293cd7f81bcb03`. 원본 MIT 라이선스는 `LICENSE`에 보존했습니다.
 
+## 관련 글
+
+- [사내망 코딩 에이전트용 LLM 서비스 구축·운영](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/): 게이트웨이와 운영 포털을 만든 배경, API 호환 처리와 스트리밍 문제를 다듬은 기록.
+- [NVIDIA H200 기반 vLLM 모델 서빙 최적화: 장문 컨텍스트와 KV 캐시·병렬화 튜닝](https://noahwannagohome.github.io/tech-b-log/posts/model-serving-tuning/): 게이트웨이 뒤에서 동작하는 모델 서버의 병렬화와 프리픽스 캐시를 조정한 기록.
+
 ## 로컬 실행
 
 Node.js 24와 pnpm 11.25.0을 사용합니다.

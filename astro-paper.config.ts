@@ -4,6 +4,7 @@ export default defineAstroPaperConfig({
   site: {
     url: "https://noahwannagohome.github.io/tech-b-log/",
     title: "Tech B.Log",
+    googleVerification: "ZlkCIsaZdjVwtDmHO61QSUSd3YrHpXp631RmgsxoqLM",
     description: "백엔드, 개발 환경, 인프라와 AI를 만들고 운영하며 쌓는 개발 경험을 기록합니다.",
     author: "김상훈",
     profile: "https://github.com/noahwannagohome",

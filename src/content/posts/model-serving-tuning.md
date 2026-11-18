@@ -165,7 +165,7 @@ KV 캐시 dtype으로는 현재 운영 명령에 `fp8_ds_mla`가 들어 있다. 
 
 ### 참고 자료
 
-- [이전 글 — 사내망 코딩 에이전트용 LLM 서비스 구축·운영](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/)
+- [이전 글 — 모델만 띄우면 끝일까? 사내망 온프레미스 LLM 인프라 구축과 게이트웨이 개발기](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/)
 - [vLLM Data Parallel Deployment](https://docs.vllm.ai/en/stable/serving/data_parallel_deployment/)
 - [vLLM Expert Parallel Deployment와 EPLB](https://docs.vllm.ai/en/stable/serving/expert_parallel_deployment/)
 - [vLLM Optimization and Tuning](https://docs.vllm.ai/en/stable/configuration/optimization/)

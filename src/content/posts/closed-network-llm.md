@@ -9,7 +9,7 @@ tags:
   - backend
   - operations
   - vllm
-description: "H200 8장 서버 한 대에 모델 하나를 띄우고, 사내망의 Claude Code와 Cline을 연결하며 겪은 일. 인프라 구성부터 API 변환, 스트리밍 지연, 빈 도구 호출의 원인을 따라간 구축·운영 기록."
+description: "H200에 모델을 띄우고 사내망 Claude Code·Cline을 연결하며 겪은 API 변환, 스트리밍 지연, 빈 도구 호출의 원인과 해결."
 ---
 
 사내망에서도 Claude Code나 Cline 같은 코딩 도구를 내부 모델에 연결해 쓰고 싶었다. 코드를 읽고, 수정하고, 실행 결과를 보면서 다음 작업을 이어가는 환경을 만드는 일이었다.

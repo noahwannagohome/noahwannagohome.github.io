@@ -9,7 +9,7 @@ export default defineAstroPaperConfig({
     description:
       "백엔드, 인프라, LLM 서빙(vLLM), 코딩 에이전트와 온프레미스 AI 도입을 직접 만들고 운영하며 겪은 문제와 해결 과정을 기록하는 김상훈의 개발 블로그.",
     // Fill these in from Naver Search Advisor / Bing Webmaster Tools when registering.
-    naverVerification: "",
+    naverVerification: "7a3e4a1242095174d15b0acd2549e9cf66ea22a8",
     bingVerification: "",
     author: "김상훈",
     profile: "https://github.com/noahwannagohome",

@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      SITE: https://noahwannagohome.github.io/tech-b-log/
+      SITE: https://noahwannagohome.github.io/
       INDEXNOW_KEY: 6a6b17851e8993236d080c6941af8ed8
     steps:
       - name: Submit sitemap URLs to IndexNow

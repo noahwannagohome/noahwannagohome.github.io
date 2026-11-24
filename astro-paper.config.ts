@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://noahwannagohome.github.io/tech-b-log/",
+    url: "https://noahwannagohome.github.io/",
     title: "Tech B.Log",
     googleVerification: "ZlkCIsaZdjVwtDmHO61QSUSd3YrHpXp631RmgsxoqLM",
     tagline: "백엔드·인프라·LLM 서빙 개발 블로그",
@@ -24,7 +24,7 @@ export default defineAstroPaperConfig({
     dynamicOgImage: false,
     showArchives: true,
     showBackButton: true,
-    editPost: { enabled: true, url: "https://github.com/noahwannagohome/tech-b-log/edit/main/" },
+    editPost: { enabled: true, url: "https://github.com/noahwannagohome/noahwannagohome.github.io/edit/main/" },
     search: "pagefind",
     toc: true,
   },

@@ -2,14 +2,14 @@
 
 만들고, 부딪히고, 배운 것을 남기는 개인 개발 블로그입니다.
 
-**블로그:** https://noahwannagohome.github.io/tech-b-log/
+**블로그:** https://noahwannagohome.github.io/
 
 [AstroPaper](https://github.com/satnaing/astro-paper) 7.1.0과 Astro 7을 기반으로 합니다. 테마 원본: `6f61e2dc0e45bbcefc05f4055f293cd7f81bcb03`. 원본 MIT 라이선스는 `LICENSE`에 보존했습니다.
 
 ## 관련 글
 
-- [모델만 띄우면 끝일까? 사내망 온프레미스 LLM 인프라 구축과 게이트웨이 개발기](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/): H200 8장 인프라 구성, 게이트웨이와 운영 포털을 만든 배경, API 호환 처리와 스트리밍 문제를 다듬은 기록.
-- [NVIDIA H200 기반 vLLM 모델 서빙 최적화: 장문 컨텍스트와 KV 캐시·병렬화 튜닝](https://noahwannagohome.github.io/tech-b-log/posts/model-serving-tuning/): 게이트웨이 뒤에서 동작하는 모델 서버의 병렬화와 프리픽스 캐시를 조정한 기록.
+- [모델만 띄우면 끝일까? 사내망 온프레미스 LLM 인프라 구축과 게이트웨이 개발기](https://noahwannagohome.github.io/posts/closed-network-llm/): H200 8장 인프라 구성, 게이트웨이와 운영 포털을 만든 배경, API 호환 처리와 스트리밍 문제를 다듬은 기록.
+- [NVIDIA H200 기반 vLLM 모델 서빙 최적화: 장문 컨텍스트와 KV 캐시·병렬화 튜닝](https://noahwannagohome.github.io/posts/model-serving-tuning/): 게이트웨이 뒤에서 동작하는 모델 서버의 병렬화와 프리픽스 캐시를 조정한 기록.
 
 ## 로컬 실행
 
@@ -54,6 +54,6 @@ pnpm preview
 
 빌드는 Astro 타입·콘텐츠 검사, 정적 페이지 생성, Pagefind 검색 색인 생성을 수행합니다. `main`에 push하면 GitHub Actions가 빌드 성공 후 GitHub Pages에 배포합니다. PR은 빌드 검증만 수행합니다.
 
-GitHub Settings → Pages → Source는 **GitHub Actions**로 설정합니다. 프로젝트 경로 `/tech-b-log`는 `astro.config.ts`에서 설정했습니다.
+GitHub Settings → Pages → Source는 **GitHub Actions**로 설정합니다. 저장소 이름이 `noahwannagohome.github.io`이므로 블로그는 도메인 루트(`/`)에서 서비스됩니다. 예전 `/tech-b-log/...` 주소는 빌드 때 새 주소로 넘겨주는 페이지가 만들어집니다.
 
 기존 `/articles/closed-network-llm.html`과 `/about.html` 주소는 새 경로로 연결합니다. 실제 서비스 소스코드는 포함하지 않습니다.

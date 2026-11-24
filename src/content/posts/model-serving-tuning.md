@@ -16,7 +16,7 @@ description: "H200 8장으로 사내 코딩 에이전트용 vLLM을 운영하며
 
 최종 명령만 보면 이런 과정은 보이지 않는다. 모델 경로를 지정하고 옵션 몇 줄을 붙여 실행한 것처럼 보인다. 실제로는 컨테이너가 계속 종료되는 문제를 먼저 다뤄야 했고, 실행이 안정된 뒤에도 기다리는 시간이 길거나 같은 요청의 속도가 달라지는 문제를 봐야 했다.
 
-[이전 글](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/)에서는 내부 모델을 Claude Code와 Cline에 연결하기 위해 만든 게이트웨이를 다뤘다. 이번에는 그 뒤에서 모델을 실행하는 쪽의 이야기다. H200 8장으로 사내 코딩 에이전트를 운영하면서 어떤 설정을 바꿨고, 왜 다시 바꾸게 됐는지 정리했다.
+[이전 글](https://noahwannagohome.github.io/posts/closed-network-llm/)에서는 내부 모델을 Claude Code와 Cline에 연결하기 위해 만든 게이트웨이를 다뤘다. 이번에는 그 뒤에서 모델을 실행하는 쪽의 이야기다. H200 8장으로 사내 코딩 에이전트를 운영하면서 어떤 설정을 바꿨고, 왜 다시 바꾸게 됐는지 정리했다.
 
 ## 먼저 컨테이너가 계속 살아 있어야 했다
 
@@ -88,7 +88,7 @@ TP는 한 요청 배치의 계산을 여러 GPU가 나누는 방식이다. DP는
 
 하지만 요청을 분산하는 것과 캐시를 재사용하는 것은 함께 생각해야 했다. DP 엔진마다 KV 캐시가 따로 있기 때문이다.
 
-![같은 prefix를 가진 후속 요청도 캐시가 있는 엔진으로 배정됐는지에 따라 재사용 여부가 달라지는 흐름](/tech-b-log/images/llm-dp-cache-routing.svg)
+![같은 prefix를 가진 후속 요청도 캐시가 있는 엔진으로 배정됐는지에 따라 재사용 여부가 달라지는 흐름](/images/llm-dp-cache-routing.svg)
 
 첫 요청을 엔진 A가 처리했는데 다음 요청이 B로 가면, A에 남은 계산 결과를 B가 자동으로 가져다 쓰지는 않는다. 각 엔진을 골고루 쓰는 것과 반복 입력을 덜 계산하는 것이 충돌할 수 있었다.
 
@@ -165,7 +165,7 @@ KV 캐시 dtype으로는 현재 운영 명령에 `fp8_ds_mla`가 들어 있다. 
 
 ### 참고 자료
 
-- [이전 글 — 모델만 띄우면 끝일까? 사내망 온프레미스 LLM 인프라 구축과 게이트웨이 개발기](https://noahwannagohome.github.io/tech-b-log/posts/closed-network-llm/)
+- [이전 글 — 모델만 띄우면 끝일까? 사내망 온프레미스 LLM 인프라 구축과 게이트웨이 개발기](https://noahwannagohome.github.io/posts/closed-network-llm/)
 - [vLLM Data Parallel Deployment](https://docs.vllm.ai/en/stable/serving/data_parallel_deployment/)
 - [vLLM Expert Parallel Deployment와 EPLB](https://docs.vllm.ai/en/stable/serving/expert_parallel_deployment/)
 - [vLLM Optimization and Tuning](https://docs.vllm.ai/en/stable/configuration/optimization/)

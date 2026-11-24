@@ -2,7 +2,14 @@ import { defineConfig, envField, svgoOptimizer } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import { readFile, readdir, rm, writeFile } from "node:fs/promises";
+import {
+  copyFile,
+  mkdir,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import rehypeCallouts from "rehype-callouts";
 import {
@@ -17,7 +24,10 @@ import {
   rehypeInlineToc,
 } from "./src/utils/rehypeInlineToc";
 
-const base = "/tech-b-log";
+// The blog is served from the root of noahwannagohome.github.io.
+const base = "/";
+// Where the blog lived before the repository became the user site.
+const legacyBase = "tech-b-log/";
 
 async function replaceAsync(
   text: string,
@@ -46,6 +56,35 @@ export default defineConfig({
         !/\/(search|archives|tags)(\/|$)/.test(new URL(page).pathname),
     }),
     {
+      // The blog used to be served under /tech-b-log/. Keep every old address
+      // working: each page gets a stub there that forwards to its new URL, and
+      // feed readers keep receiving the RSS feed at its old address.
+      name: "legacy-base-redirects",
+      hooks: {
+        "astro:build:done": async ({ dir, pages, logger }) => {
+          const site = "https://noahwannagohome.github.io";
+          const legacyDir = new URL(legacyBase, dir);
+          let count = 0;
+          for (const { pathname } of pages) {
+            if (pathname !== "" && !pathname.endsWith("/")) continue;
+            if (pathname === "404/") continue;
+            const target = `${base}${pathname}`;
+            const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>Tech B.Log</title><link rel="canonical" href="${site}${target}"><meta http-equiv="refresh" content="0;url=${target}"></head><body><a href="${target}">새 주소로 이동</a></body></html>`;
+            const stubDir = new URL(pathname, legacyDir);
+            await mkdir(stubDir, { recursive: true });
+            await writeFile(new URL("index.html", stubDir), html);
+            count++;
+          }
+          await mkdir(legacyDir, { recursive: true });
+          await copyFile(
+            new URL("rss.xml", dir),
+            new URL("rss.xml", legacyDir)
+          );
+          logger.info(`Wrote ${count} redirects from /${legacyBase}`);
+        },
+      },
+    },
+    {
       name: "single-sitemap",
       hooks: {
         "astro:build:done": async ({ dir, logger }) => {
@@ -66,7 +105,7 @@ export default defineConfig({
             xml,
             /<loc>([^<]+)<\/loc>/g,
             async (match, loc) => {
-              const path = new URL(loc).pathname.slice(`${base}/`.length);
+              const path = new URL(loc).pathname.slice(base.length);
               if (!path.startsWith("posts/") || path === "posts/") return match;
               const html = await readFile(
                 new URL(`${path}index.html`, dir),

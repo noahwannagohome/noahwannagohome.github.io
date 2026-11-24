@@ -11,7 +11,7 @@ export default defineAstroPaperConfig({
     // Fill these in from Naver Search Advisor / Bing Webmaster Tools when registering.
     naverVerification: "7a3e4a1242095174d15b0acd2549e9cf66ea22a8",
     bingVerification: "",
-    author: "김상훈",
+    author: "Noah",
     profile: "https://github.com/noahwannagohome",
     ogImage: "tech-b-log-og.png",
     lang: "ko",
@@ -28,6 +28,6 @@ export default defineAstroPaperConfig({
     search: "pagefind",
     toc: true,
   },
-  socials: [{ name: "github", url: "https://github.com/noahwannagohome", linkTitle: "김상훈의 GitHub" }],
+  socials: [{ name: "github", url: "https://github.com/noahwannagohome", linkTitle: "Noah의 GitHub" }],
   shareLinks: [],
 });
